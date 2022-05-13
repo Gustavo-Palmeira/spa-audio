@@ -1,8 +1,21 @@
+import { useQuery } from '@apollo/client'
 import { PlayArrow, QueueMusic } from '@mui/icons-material'
-import { Box, Card, CardActions, CardContent, CardMedia, IconButton, Typography } from '@mui/material'
+import { Box, Card, CardActions, CardContent, CardMedia, CircularProgress, IconButton, LinearProgress, Typography } from '@mui/material'
 import React from 'react'
+import { GET_SONGS } from '../graphql/query'
 
 const MusicList = () => {
+  const { data, loading, error } = useQuery(GET_SONGS)
+
+  if (loading) {
+    return <div><LinearProgress /></div>
+  }
+
+  if (error) {
+    console.log(error)
+    return <div>Erro</div>
+  }
+
   const mock = {
     title: 'Título da música',
     artist: 'Artista da música',
@@ -11,9 +24,9 @@ const MusicList = () => {
 
   return (
     <Box sx={{ p: 1 }}>
-      {Array.from({ length: 10 }, () => mock).map((music, index) => (
+      {data.songs.map((music, index) => (
         <Card key={index} sx={{ display: 'flex', alignItems: 'center', mt: 2, height: '80px' }}>
-          <CardMedia image={music.image} style={{ objectFit: 'cover', width: 120, height: 120 }}/>
+          <CardMedia image={music.thumbnail} style={{ objectFit: 'cover', width: 120, height: 120 }}/>
           <Box sx={{ width: '100%', display: 'flex', justifyContent: 'space-between' }}>
             <CardContent>
               <Typography variant="h6" component="h2">{music.title}</Typography>

@@ -13,9 +13,9 @@ const MusicQueue = () => {
     <Box sx={{ p: 1, mt: 4 }}>
       <Typography variant="h5" component="h2">{`Fila (${Array.from({ length: 10 }, () => mock).length})`}</Typography>
       {Array.from({ length: 10 }, () => mock).map((music, index) => (
-        <Box key={index} sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', mt: 1 }}>
+        <Box key={index} sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', mt: 2 }}>
           <Box sx={{ display: 'flex', mr: 2 }}>
-            <Avatar src={music.image} alt="Capa do CD" sx={{ width: 40, height: 40 }} />
+            <Avatar src={music.image} alt="Capa do CD" sx={{ width: 40, height: 40, mr: 2 }} />
             <Box sx={{ display: 'flex', flexDirection: 'column' }}>
               <Typography variant="subtitle2" component="h2">{music.title}</Typography>
               <Typography variant="body2" component="h2">{music.artist}</Typography>
