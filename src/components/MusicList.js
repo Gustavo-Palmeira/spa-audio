@@ -1,11 +1,24 @@
-import { useQuery } from '@apollo/client'
-import { PlayArrow, QueueMusic } from '@mui/icons-material'
+import React, { useContext } from 'react'
+import { useSubscription } from '@apollo/client'
+import { Pause, PlayArrow, QueueMusic } from '@mui/icons-material'
 import { Box, Card, CardActions, CardContent, CardMedia, CircularProgress, IconButton, LinearProgress, Typography } from '@mui/material'
-import React from 'react'
-import { GET_SONGS } from '../graphql/query'
+import { GET_SONGS } from '../graphql/subscription'
+import { SongContext } from '../App'
 
-const MusicList = () => {
-  const { data, loading, error } = useQuery(GET_SONGS)
+const MusicList = ({ queue }) => {
+  const { data, loading, error } = useSubscription(GET_SONGS)
+  const { currentSong, songDispatch } = useContext(SongContext)
+
+  console.log(currentSong.isPlaying)
+
+  const handleChangeMusic = (music) => {
+    songDispatch({ type: 'CHANGE_SONG', payload: { music } })
+    songDispatch({ type: music.isPlaying ? "PAUSE_SONG" : "PLAY_SONG" })
+  }
+
+  const handleAddQueue = (music) => {
+    queue.queueDispatch({ type: 'ADD_QUEUE', payload: { music } })
+  }
 
   if (loading) {
     return <div><LinearProgress /></div>
@@ -16,27 +29,21 @@ const MusicList = () => {
     return <div>Erro</div>
   }
 
-  const mock = {
-    title: 'Título da música',
-    artist: 'Artista da música',
-    image: 'https://www.vilage.com.br/blog/wp-content/uploads/2021/04/como-registrar-uma-musica.png',
-  }
-
   return (
     <Box sx={{ p: 1 }}>
       {data.songs.map((music, index) => (
         <Card key={index} sx={{ display: 'flex', alignItems: 'center', mt: 2, height: '80px' }}>
-          <CardMedia image={music.thumbnail} style={{ objectFit: 'cover', width: 120, height: 120 }}/>
+          <CardMedia image={music.thumbnail} style={{ objectFit: 'cover', width: 120, height: 120 }} />
           <Box sx={{ width: '100%', display: 'flex', justifyContent: 'space-between' }}>
             <CardContent>
               <Typography variant="h6" component="h2">{music.title}</Typography>
               <Typography variant="subtitle1" component="h3">{music.artist}</Typography>
             </CardContent>
             <CardActions>
-              <IconButton>
-                <PlayArrow color="secondary" />
+              <IconButton onClick={() => handleChangeMusic(music)}>
+                {currentSong.isPlaying && currentSong.song.title === music.title ? <Pause color='secondary' /> : <PlayArrow color='secondary' />}
               </IconButton>
-              <IconButton>
+              <IconButton onClick={() => handleAddQueue(music)}>
                 <QueueMusic color="secondary" />
               </IconButton>
             </CardActions>
