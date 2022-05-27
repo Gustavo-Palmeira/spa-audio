@@ -66,8 +66,8 @@ const MusicAdd = () => {
   }
 
   useEffect(() => {
-    setUrl({ ...url, canPlay: YouTubePlayer.canPlay(url.value) })
-  }, [url.value])
+    setUrl(prevValue => ({ ...prevValue, canPlay: YouTubePlayer.canPlay(prevValue.value) }))
+  }, [])
 
   return (
     <Box sx={{ p: 1 }}>
@@ -75,7 +75,7 @@ const MusicAdd = () => {
         <Box>
           <DialogTitle>Editar Música</DialogTitle>
           <DialogContent>
-            <img src={song.thumbnail} style={{ width: '100%', height: '200px', objectFit: 'cover' }} />
+            <img src={song.thumbnail} style={{ width: '100%', height: '200px', objectFit: 'cover' }} alt="capa" />
             <TextField
               value={song.title}
               onChange={handleEditDataSong}

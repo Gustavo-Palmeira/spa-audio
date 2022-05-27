@@ -34,7 +34,7 @@ const App = () => {
         </Grid>
         <Grid item xs={12} md={4} style={
           largeScreen
-            ? { position: 'fixed', width: '100%', right: 10, top: 96 }
+            ? { width: '100%', right: 10, top: 96 }
             : { position: 'fixed', width: '100%', left: 0, bottom: 10 }
         }
         >

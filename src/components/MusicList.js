@@ -1,15 +1,13 @@
 import React, { useContext } from 'react'
 import { useSubscription } from '@apollo/client'
 import { Pause, PlayArrow, QueueMusic } from '@mui/icons-material'
-import { Box, Card, CardActions, CardContent, CardMedia, CircularProgress, IconButton, LinearProgress, Typography } from '@mui/material'
+import { Box, Card, CardActions, CardContent, CardMedia, IconButton, LinearProgress, Typography } from '@mui/material'
 import { GET_SONGS } from '../graphql/subscription'
 import { SongContext } from '../App'
 
 const MusicList = ({ queue }) => {
   const { data, loading, error } = useSubscription(GET_SONGS)
   const { currentSong, songDispatch } = useContext(SongContext)
-
-  console.log(currentSong.isPlaying)
 
   const handleChangeMusic = (music) => {
     songDispatch({ type: 'CHANGE_SONG', payload: { music } })
@@ -25,8 +23,7 @@ const MusicList = ({ queue }) => {
   }
 
   if (error) {
-    console.log(error)
-    return <div>Erro</div>
+    return <div>{error}</div>
   }
 
   return (
